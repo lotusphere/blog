@@ -4,12 +4,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ParamController {
-    @GetMapping("/no-annotation")
+    @GetMapping("/noAnnotation")
     public User noAnnotation(User user) {
         return user;
     }
 
-    @GetMapping("/request-param")
+    @GetMapping("/requestParam")
     public User requestParam(@RequestParam String name, @RequestParam int age) {
         User user = new User();
         user.setName(name);
@@ -17,7 +17,7 @@ public class ParamController {
         return user;
     }
 
-    @GetMapping("/path-variable/{name}/{age}")
+    @GetMapping("/pathVariable/{name}/{age}")
     public User pathVariable(@PathVariable String name, @PathVariable int age) {
         User user = new User();
         user.setName(name);
@@ -25,7 +25,7 @@ public class ParamController {
         return user;
     }
 
-    @PostMapping("/request-body")
+    @PostMapping("/requestBody")
     public User requestBody(@RequestBody User user) {
         return user;
     }
