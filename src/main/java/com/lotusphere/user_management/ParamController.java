@@ -1,5 +1,6 @@
 package com.lotusphere.user_management;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +27,7 @@ public class ParamController {
     }
 
     @PostMapping("/requestBody")
-    public User requestBody(@RequestBody User user) {
+    public User requestBody(@RequestBody @Valid User user) {
         return user;
     }
 }
