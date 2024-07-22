@@ -10,6 +10,9 @@ import java.time.LocalDate;
 
 @Data
 public class User {
+
+    private int id;
+
     @NotBlank(message = "User name cannot be blank")
     private String name;
 
