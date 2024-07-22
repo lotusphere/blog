@@ -12,10 +12,13 @@ public class WebConfigurer implements WebMvcConfigurer {
     @Autowired
     // @Autowired: This annotation is used for dependency injection. It tells Spring to automatically inject the LogInterceptor bean into this field.
     private LogInterceptor logInterceptor;
+    @Autowired
+    private TimeInterceptor timeInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // WebMvcConfigurer.super.addInterceptors(registry);
-        registry.addInterceptor(logInterceptor);
+        // registry.addInterceptor(logInterceptor);
+        registry.addInterceptor(timeInterceptor);
     }
 }
