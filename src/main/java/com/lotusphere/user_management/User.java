@@ -1,28 +1,35 @@
 package com.lotusphere.user_management;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+@Entity
+// @Entity: Marks the class as a JPA entity, which means it is a persistent Java object and should be mapped to a database table.
+@Table(indexes = {@Index(name = "uk_email",columnList = "email",unique = true)})
+// @Table: Specifies the details of the table that the entity is mapped to. This includes the table name and any indexes.
+// @Index: Used within the @Table annotation to define indexes on columns.
 public class User {
 
+    @Id
+    // @Id: Specifies the primary key of an entity.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GenerateValue: Provides the specification for the generation strategy of primary key values.
     private int id;
 
-    @NotBlank(message = "User name cannot be blank")
+    @Column(nullable = false, columnDefinition = "varchar(20) comment 'name'")
+    // @Column: Specifies the details of the column to which a field or property is mapped. This includes the column name, whether it's nullable, its length, etc.
     private String name;
 
-    @Min(value = 1, message = "Age cannot be less than 1")
+    @Transient
+    // @Transient: Specifies that a field or property is not persistent and should not be mapped to the database.
     private int age;
 
-    @Email(message = "E-mail format is not correct")
+    @Column(nullable = false, length = 50)
     private String email;
 
-    @Past(message = "Birthday must be a past date")
     private LocalDate birthday;
 }
 
