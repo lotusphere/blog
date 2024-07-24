@@ -1,10 +1,10 @@
-package com.lotusphere.user_management;
+package com.lotusphere.blog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class UserManagementApplicationTests {
+class BlogApplicationTests {
 
 	@Test
 	void contextLoads() {
