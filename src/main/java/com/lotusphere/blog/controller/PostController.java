@@ -1,2 +1,10 @@
-package com.lotusphere.blog.controller;public class PostController {
+package com.lotusphere.blog.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/posts")
+public class PostController {
+
 }
