@@ -26,9 +26,17 @@ public class PostController {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
+//    @GetMapping
+//    public ResponseEntity<List<PostDto>> getAllPosts() {
+//        return ResponseEntity.ok(postService.getAllPosts());
+//    }
+
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<List<PostDto>> getAllPosts(
+            @RequestParam(defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(defaultValue = "10", required = false) int pageSize
+    ) {
+        return ResponseEntity.ok(postService.getAllPosts(pageNumber, pageSize));
     }
 
     // TODO: Long or long?
