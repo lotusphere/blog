@@ -5,6 +5,9 @@ import com.lotusphere.blog.exception.ResourceNotFoundException;
 import com.lotusphere.blog.payload.PostDto;
 import com.lotusphere.blog.repository.PostRepository;
 import com.lotusphere.blog.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,11 +36,22 @@ public class PostServiceImpl implements PostService {
         return postResponse;
     }
 
+//    @Override
+//    public List<PostDto> getAllPosts() {
+//        List<Post> posts = postRepository.findAll();
+//        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+//    }
+
     // TODO: Lambda can be replaced with method reference
     @Override
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+    public List<PostDto> getAllPosts(int pageNumber, int pageSize) {
+        // create Pageable instance
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        // get content for page object
+        List<Post> postList = posts.getContent();
+        return postList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
     }
 
     @Override
