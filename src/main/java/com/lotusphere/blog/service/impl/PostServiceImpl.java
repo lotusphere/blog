@@ -7,6 +7,7 @@ import com.lotusphere.blog.service.PostService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -30,9 +31,11 @@ public class PostServiceImpl implements PostService {
         return postResponse;
     }
 
+    // TODO: Lambda can be replaced with method reference
     @Override
     public List<PostDto> getAllPosts() {
-        return null;
+        List<Post> posts = postRepository.findAll();
+        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
     }
 
     // convert Entity to Dto
@@ -53,5 +56,4 @@ public class PostServiceImpl implements PostService {
         post.setContent(postDto.getContent());
         return post;
     }
-
 }
