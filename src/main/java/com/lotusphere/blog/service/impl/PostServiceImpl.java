@@ -6,9 +6,12 @@ import com.lotusphere.blog.repository.PostRepository;
 import com.lotusphere.blog.service.PostService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostServiceImpl implements PostService {
 
+    // TODO: final
     private PostRepository postRepository;
 
     // @Autowired
@@ -18,22 +21,37 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto createPost(PostDto postDto) {
-
         // convert DTO to entity
+        Post post = mapToEntity(postDto);
+        Post newPost = postRepository.save(post);
+
+        // convert entity to DTO
+        PostDto postResponse = mapToDto(newPost);
+        return postResponse;
+    }
+
+    @Override
+    public List<PostDto> getAllPosts() {
+        return null;
+    }
+
+    // convert Entity to Dto
+    private PostDto mapToDto(Post post) {
+        PostDto postDto = new PostDto();
+        postDto.setId(post.getId());
+        postDto.setTitle(post.getTitle());
+        postDto.setDescription(post.getDescription());
+        postDto.setContent(post.getContent());
+        return postDto;
+    }
+
+    // convert Dto to Entity
+    private Post mapToEntity(PostDto postDto) {
         Post post = new Post();
         post.setTitle((postDto.getTitle()));
         post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
-
-        Post newPost = postRepository.save(post);
-
-        // convert entity to DTO
-        PostDto postResponse = new PostDto();
-        postResponse.setId(newPost.getId());
-        postResponse.setTitle(newPost.getTitle());
-        postResponse.setDescription(newPost.getDescription());
-        postResponse.setContent(newPost.getContent());
-
-        return postResponse;
+        return post;
     }
+
 }
