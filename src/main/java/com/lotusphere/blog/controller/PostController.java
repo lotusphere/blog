@@ -1,6 +1,5 @@
 package com.lotusphere.blog.controller;
 
-import com.lotusphere.blog.entity.Post;
 import com.lotusphere.blog.payload.PostDto;
 import com.lotusphere.blog.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -27,11 +26,9 @@ public class PostController {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
-    // TODO: wrap with ResponseEntity
-    // get all posts
     @GetMapping
-    public List<PostDto> getAllPosts() {
-        return postService.getAllPosts();
+    public ResponseEntity<List<PostDto>> getAllPosts() {
+        return ResponseEntity.ok(postService.getAllPosts());
     }
 
     // TODO: Long or long?
