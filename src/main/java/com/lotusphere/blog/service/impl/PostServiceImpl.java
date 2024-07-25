@@ -1,6 +1,7 @@
 package com.lotusphere.blog.service.impl;
 
 import com.lotusphere.blog.entity.Post;
+import com.lotusphere.blog.exception.ResourceNotFoundException;
 import com.lotusphere.blog.payload.PostDto;
 import com.lotusphere.blog.repository.PostRepository;
 import com.lotusphere.blog.service.PostService;
@@ -26,6 +27,7 @@ public class PostServiceImpl implements PostService {
         Post post = mapToEntity(postDto);
         Post newPost = postRepository.save(post);
 
+        // TODO: Local variable 'postResponse' is redundant
         // convert entity to DTO
         PostDto postResponse = mapToDto(newPost);
         return postResponse;
@@ -36,6 +38,12 @@ public class PostServiceImpl implements PostService {
     public List<PostDto> getAllPosts() {
         List<Post> posts = postRepository.findAll();
         return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDto getPostById(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        return mapToDto(post);
     }
 
     // convert Entity to Dto
