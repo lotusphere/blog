@@ -3,11 +3,10 @@ package com.lotusphere.blog.controller;
 import com.lotusphere.blog.payload.PostDto;
 import com.lotusphere.blog.payload.PostResponse;
 import com.lotusphere.blog.service.PostService;
+import com.lotusphere.blog.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -42,10 +41,10 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PostResponse> getAllPosts(
-            @RequestParam(defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(defaultValue = "10", required = false) int pageSize,
-            @RequestParam(defaultValue = "id", required = false) String sortBy,
-            @RequestParam(defaultValue = "asc", required = false) String sortDir
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
     ) {
         return ResponseEntity.ok(postService.getAllPosts(pageNumber, pageSize, sortBy, sortDir));
     }
