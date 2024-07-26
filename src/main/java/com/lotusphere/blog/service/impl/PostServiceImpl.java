@@ -78,9 +78,14 @@ public class PostServiceImpl implements PostService {
 
     // TODO: Lambda can be replaced with method reference
     @Override
-    public PostResponse getAllPosts(int pageNumber, int pageSize, String sortBy) {
+    public PostResponse getAllPosts(int pageNumber, int pageSize, String sortBy, String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
         // create Pageable instance
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<Post> posts = postRepository.findAll(pageable);
 
         // get content for page object
