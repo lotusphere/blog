@@ -1,6 +1,7 @@
 package com.lotusphere.blog.controller;
 
 import com.lotusphere.blog.payload.PostDto;
+import com.lotusphere.blog.payload.PostResponse;
 import com.lotusphere.blog.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class PostController {
 //    }
 
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAllPosts(
+    public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(defaultValue = "0", required = false) int pageNumber,
             @RequestParam(defaultValue = "10", required = false) int pageSize
     ) {
