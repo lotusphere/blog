@@ -32,12 +32,21 @@ public class PostController {
 //        return ResponseEntity.ok(postService.getAllPosts());
 //    }
 
+//    @GetMapping
+//    public ResponseEntity<PostResponse> getAllPosts(
+//            @RequestParam(defaultValue = "0", required = false) int pageNumber,
+//            @RequestParam(defaultValue = "10", required = false) int pageSize
+//    ) {
+//        return ResponseEntity.ok(postService.getAllPosts(pageNumber, pageSize));
+//    }
+
     @GetMapping
     public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(defaultValue = "10", required = false) int pageSize
+            @RequestParam(defaultValue = "10", required = false) int pageSize,
+            @RequestParam(defaultValue = "id", required = false) String sortBy
     ) {
-        return ResponseEntity.ok(postService.getAllPosts(pageNumber, pageSize));
+        return ResponseEntity.ok(postService.getAllPosts(pageNumber, pageSize, sortBy));
     }
 
     // TODO: Long or long?
