@@ -9,6 +9,7 @@ import com.lotusphere.blog.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,11 +55,32 @@ public class PostServiceImpl implements PostService {
 //        return postList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
 //    }
 
+//    @Override
+//    public PostResponse getAllPosts(int pageNumber, int pageSize) {
+//        // create Pageable instance
+//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+//        Page<Post> posts = postRepository.findAll(pageable);
+//
+//        // get content for page object
+//        List<Post> postList = posts.getContent();
+//        List<PostDto> content = postList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+//
+//        PostResponse postResponse = new PostResponse();
+//        postResponse.setContent(content);
+//        postResponse.setPageNumber(posts.getNumber());
+//        postResponse.setPageSize(posts.getSize());
+//        postResponse.setTotalElements(posts.getTotalElements());
+//        postResponse.setTotalPages(posts.getTotalPages());
+//        postResponse.setLast(posts.isLast());
+//
+//        return postResponse;
+//    }
+
     // TODO: Lambda can be replaced with method reference
     @Override
-    public PostResponse getAllPosts(int pageNumber, int pageSize) {
+    public PostResponse getAllPosts(int pageNumber, int pageSize, String sortBy) {
         // create Pageable instance
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         Page<Post> posts = postRepository.findAll(pageable);
 
         // get content for page object
