@@ -3,11 +3,13 @@ package com.lotusphere.blog.service.impl;
 import com.lotusphere.blog.entity.Post;
 import com.lotusphere.blog.exception.ResourceNotFoundException;
 import com.lotusphere.blog.payload.PostDto;
+import com.lotusphere.blog.payload.PostResponse;
 import com.lotusphere.blog.repository.PostRepository;
 import com.lotusphere.blog.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,16 +44,63 @@ public class PostServiceImpl implements PostService {
 //        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
 //    }
 
+//    @Override
+//    public List<PostDto> getAllPosts(int pageNumber, int pageSize) {
+//        // create Pageable instance
+//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+//        Page<Post> posts = postRepository.findAll(pageable);
+//
+//        // get content for page object
+//        List<Post> postList = posts.getContent();
+//        return postList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+//    }
+
+//    @Override
+//    public PostResponse getAllPosts(int pageNumber, int pageSize) {
+//        // create Pageable instance
+//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+//        Page<Post> posts = postRepository.findAll(pageable);
+//
+//        // get content for page object
+//        List<Post> postList = posts.getContent();
+//        List<PostDto> content = postList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+//
+//        PostResponse postResponse = new PostResponse();
+//        postResponse.setContent(content);
+//        postResponse.setPageNumber(posts.getNumber());
+//        postResponse.setPageSize(posts.getSize());
+//        postResponse.setTotalElements(posts.getTotalElements());
+//        postResponse.setTotalPages(posts.getTotalPages());
+//        postResponse.setLast(posts.isLast());
+//
+//        return postResponse;
+//    }
+
     // TODO: Lambda can be replaced with method reference
     @Override
-    public List<PostDto> getAllPosts(int pageNumber, int pageSize) {
+    public PostResponse getAllPosts(int pageNumber, int pageSize, String sortBy, String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
         // create Pageable instance
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<Post> posts = postRepository.findAll(pageable);
 
         // get content for page object
         List<Post> postList = posts.getContent();
-        return postList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        List<PostDto> content = postList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNumber(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+
+        return postResponse;
     }
 
     @Override
