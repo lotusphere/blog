@@ -44,9 +44,10 @@ public class PostController {
     public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(defaultValue = "0", required = false) int pageNumber,
             @RequestParam(defaultValue = "10", required = false) int pageSize,
-            @RequestParam(defaultValue = "id", required = false) String sortBy
+            @RequestParam(defaultValue = "id", required = false) String sortBy,
+            @RequestParam(defaultValue = "asc", required = false) String sortDir
     ) {
-        return ResponseEntity.ok(postService.getAllPosts(pageNumber, pageSize, sortBy));
+        return ResponseEntity.ok(postService.getAllPosts(pageNumber, pageSize, sortBy, sortDir));
     }
 
     // TODO: Long or long?
