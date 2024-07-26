@@ -20,4 +20,8 @@ public class Comment {
 
     @Column(nullable = false)
     private String body;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 }
