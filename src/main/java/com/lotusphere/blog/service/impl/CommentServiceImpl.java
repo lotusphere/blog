@@ -2,11 +2,13 @@ package com.lotusphere.blog.service.impl;
 
 import com.lotusphere.blog.entity.Comment;
 import com.lotusphere.blog.entity.Post;
+import com.lotusphere.blog.exception.BlogApiException;
 import com.lotusphere.blog.exception.ResourceNotFoundException;
 import com.lotusphere.blog.payload.CommentDto;
 import com.lotusphere.blog.repository.CommentRepository;
 import com.lotusphere.blog.repository.PostRepository;
 import com.lotusphere.blog.service.CommentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,21 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> comments = commentRepository.findByPostId(postId);
         // convert list of comment entities to list of comment dto
         return comments.stream().map(comment -> mapToDto(comment)).collect(Collectors.toList());
+    }
+
+    @Override
+    public CommentDto getCommentById(Long postId, Long id) {
+        // retrieve post entity by id
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        // retrieve comment by id
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", id));
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
+        }
+
+        return mapToDto(comment);
     }
 
     private CommentDto mapToDto(Comment comment) {
