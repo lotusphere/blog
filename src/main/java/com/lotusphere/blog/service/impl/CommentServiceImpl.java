@@ -1,8 +1,11 @@
 package com.lotusphere.blog.service.impl;
 
 import com.lotusphere.blog.entity.Comment;
+import com.lotusphere.blog.entity.Post;
+import com.lotusphere.blog.exception.ResourceNotFoundException;
 import com.lotusphere.blog.payload.CommentDto;
 import com.lotusphere.blog.repository.CommentRepository;
+import com.lotusphere.blog.repository.PostRepository;
 import com.lotusphere.blog.service.CommentService;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +13,26 @@ import org.springframework.stereotype.Service;
 public class CommentServiceImpl implements CommentService {
 
     private CommentRepository commentRepository;
+    private PostRepository postRepository;
 
+    // TODO: in what circumstance can @Autowired be omitted?
     // @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
     }
 
     @Override
     public CommentDto createComment(long postId, CommentDto commentDto) {
         Comment comment = mapToEntity(commentDto);
-        Comment newComment = commentRepository.save(comment);
 
+        // retrieve post entity by id
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        // set post to comment entity
+        comment.setPost(post);
+
+        // save comment entity into database
+        Comment newComment = commentRepository.save(comment);
         return mapToDto(newComment);
     }
 
