@@ -12,4 +12,6 @@ public interface CommentService {
 
     // TODO: Long or long?
     CommentDto getCommentById(Long postId, Long id);
+
+    CommentDto updateComment(Long postId, long id, CommentDto commentDto);
 }
