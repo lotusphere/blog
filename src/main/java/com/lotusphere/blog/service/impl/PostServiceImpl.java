@@ -6,6 +6,7 @@ import com.lotusphere.blog.payload.PostDto;
 import com.lotusphere.blog.payload.PostResponse;
 import com.lotusphere.blog.repository.PostRepository;
 import com.lotusphere.blog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,12 @@ public class PostServiceImpl implements PostService {
     // TODO: final
     private PostRepository postRepository;
 
+    private ModelMapper mapper;
+
     // @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -130,20 +134,22 @@ public class PostServiceImpl implements PostService {
 
     // convert Entity to Dto
     private PostDto mapToDto(Post post) {
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setDescription(post.getDescription());
-        postDto.setContent(post.getContent());
-        return postDto;
+//        PostDto postDto = new PostDto();
+//        postDto.setId(post.getId());
+//        postDto.setTitle(post.getTitle());
+//        postDto.setDescription(post.getDescription());
+//        postDto.setContent(post.getContent());
+
+        return mapper.map(post, PostDto.class);
     }
 
     // convert Dto to Entity
     private Post mapToEntity(PostDto postDto) {
-        Post post = new Post();
-        post.setTitle((postDto.getTitle()));
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
-        return post;
+//        Post post = new Post();
+//        post.setTitle((postDto.getTitle()));
+//        post.setDescription(postDto.getDescription());
+//        post.setContent(postDto.getContent());
+
+        return mapper.map(postDto, Post.class);
     }
 }
